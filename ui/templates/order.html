@@ -1,27 +1,28 @@
 <!DOCTYPE html>
 <style>
+    .container {
+        max-width: 1200px;
+        width: 100%;
+        margin: 0 auto;
+    }
     .table {
-	width: 100%;
-	margin-bottom: 20px;
-	border: 1px solid #dddddd;
-	border-collapse: collapse; 
-}
-.table th {
-	font-weight: bold;
-	padding: 5px;
-	background: #efefef;
-	border: 1px solid #dddddd;
-}
-.table td {
-	border: 1px solid #dddddd;
-	padding: 5px;
-}
+	    width: 100%;
+	    margin-bottom: 20px;
+        border: 4px solid #979797;
+	    border-collapse: collapse; 
+    }
+    .table td {
+	    border: 1px solid #dddddd;
+	    padding: 5px;
+        text-align: center;
+    }
 </style>
 <html>
   <head>
     <title>Order Info</title>
   </head>
   <body>
+      <div class="container">
     <input type="search" id="search" placeholder="Get order info by ID">
 <button type="button" onclick="handler()">Search</button>
     <table class="table">
@@ -67,7 +68,7 @@
             <td>E-mail</td>
             <td>{{ .Delivery.Email }}</td>
         </tr>
-        <tr><td>Payment info</td></tr>
+        <tr><td colspan="2">Payment info</td></tr>
             <tr>
             <td>Transaction</td>
             <td>{{ .Payment.Transaction }}</td>
@@ -108,8 +109,9 @@
             <td>Custom Fee</td>
             <td>{{ .Payment.CustomFee }}</td>
             </tr>
+            <tr><td colspan="2">Items</td></tr>
         {{range .Items }}
-        <tr><td>Item</td></tr>
+        <tr><td colspan="2">Item</td></tr>
             <tr>
             <td>ChrtId</td>
             <td>{{ .ChrtId }}</td>
@@ -155,7 +157,7 @@
             <td>{{ .Status }}</td>
             </tr>
         {{end}}
-
+        <tr><td colspan="2"></td></tr>
         <tr>
             <td>Locale</td>
             <td>{{ .Locale}}
@@ -189,6 +191,7 @@
             <td>{{ .OofShard}}
       	</tr>
     </table>
+</div>
   </body>
   <script>
     function handler() {
