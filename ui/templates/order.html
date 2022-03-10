@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<style>
+    .table {
+	width: 100%;
+	margin-bottom: 20px;
+	border: 1px solid #dddddd;
+	border-collapse: collapse; 
+}
+.table th {
+	font-weight: bold;
+	padding: 5px;
+	background: #efefef;
+	border: 1px solid #dddddd;
+}
+.table td {
+	border: 1px solid #dddddd;
+	padding: 5px;
+}
+</style>
+<html>
+  <head>
+    <title>Order Info</title>
+  </head>
+  <body>
+    <input type="search" id="search" placeholder="Get order info by ID">
+<button type="button" onclick="handler()">Search</button>
+    <table class="table">
+        <caption>Order information</caption>
+      	<tr>
+          <td>Order Id</td>
+          <td>{{ .OrderUid}}</td>
+    	</tr>
+      	<tr>
+            <td>Track Number</td>
+            <td>{{ .TrackNumber}}
+      	</tr>			
+      	<tr>
+            <td>Entry</td>
+            <td>{{ .Entry}}
+        </tr>
+        <tr><td>Delivery info</td></tr>
+        <tr>
+            <td>name</td>
+            <td>{{ .Delivery.Name }}</td>
+        </tr>
+        <tr>
+            <td>Phone</td>
+            <td>{{ .Delivery.Phone }}</td>
+        </tr>
+        <tr>
+            <td>Zip</td>
+            <td>{{ .Delivery.Zip }}</td>
+        </tr>
+        <tr>
+            <td>City</td>
+            <td>{{ .Delivery.City }}</td>
+        </tr>
+        <tr>
+            <td>Address</td>
+            <td>{{ .Delivery.Address }}</td>
+        </tr>
+        <tr>
+            <td>Region</td>
+            <td>{{ .Delivery.Region }}</td>
+        </tr>
+        <tr>
+            <td>E-mail</td>
+            <td>{{ .Delivery.Email }}</td>
+        </tr>
+        <tr><td>Payment info</td></tr>
+            <tr>
+            <td>Transaction</td>
+            <td>{{ .Payment.Transaction }}</td>
+            </tr>
+            <tr>
+            <td>RequestId</td>
+            <td>{{ .Payment.RequestId }}</td>
+            </tr>
+            <tr>
+            <td>Currency</td>
+            <td>{{ .Payment.Currency }}</td>
+            </tr>
+            <tr>
+            <td>Provider</td>
+            <td>{{ .Payment.Provider }}</td>
+            </tr>
+            <tr>
+            <td>Amount</td>
+            <td>{{ .Payment.Amount }}</td>
+            </tr>
+            <tr>
+            <td>Payment Dt</td>
+            <td>{{ .Payment.PaymentDt }}</td>
+            </tr>
+            <tr>
+            <td>Bank</td>
+            <td>{{ .Payment.Bank }}</td>
+            </tr>
+            <tr>
+            <td>Delivery Cost</td>
+            <td>{{ .Payment.DeliveryCost }}</td>
+            </tr>
+            <tr>
+            <td>Goods Total</td>
+            <td>{{ .Payment.GoodsTotal }}</td>
+            </tr>
+            <tr>
+            <td>Custom Fee</td>
+            <td>{{ .Payment.CustomFee }}</td>
+            </tr>
+        {{range .Items }}
+        <tr><td>Item</td></tr>
+            <tr>
+            <td>ChrtId</td>
+            <td>{{ .ChrtId }}</td>
+            </tr>
+            <tr>
+            <td>TrackNumber</td>
+            <td>{{ .TrackNumber }}</td>
+            </tr>
+            <tr>
+            <td>Price</td>
+            <td>{{ .Price }}</td>
+            </tr>
+            <tr>
+            <td>Rid</td>
+            <td>{{ .Rid }}</td>
+            </tr>
+            <tr>
+            <td>Name</td>
+            <td>{{ .Name }}</td>
+            </tr>
+            <tr>
+            <td>Sale</td>
+            <td>{{ .Sale }}</td>
+            </tr>
+            <tr>
+            <td>Size</td>
+            <td>{{ .Size }}</td>
+            </tr>
+            <tr>
+            <td>Total Price</td>
+            <td>{{ .TotalPrice }}</td>
+            </tr>
+            <tr>
+            <td>Nm Id</td>
+            <td>{{ .NmId }}</td>
+            </tr>
+            <tr>
+            <td>Brand</td>
+            <td>{{ .Brand }}</td>
+            </tr>
+            <tr>
+            <td>Status</td>
+            <td>{{ .Status }}</td>
+            </tr>
+        {{end}}
+
+        <tr>
+            <td>Locale</td>
+            <td>{{ .Locale}}
+      	</tr>	
+        <tr>
+            <td>Internal Signature</td>
+            <td>{{ .InternalSignature}}
+      	</tr>
+        <tr>
+            <td>Customer ID</td>
+            <td>{{ .CustomerId}}
+      	</tr>
+        <tr>
+            <td>Delivery Service</td>
+            <td>{{ .DeliveryService}}
+      	</tr>
+        <tr>
+            <td>Shard Key</td>
+            <td>{{ .Shardkey}}
+      	</tr>
+        <tr>
+            <td>Sm ID</td>
+            <td>{{ .SmId}}
+      	</tr>
+        <tr>
+            <td>Date Created</td>
+            <td>{{ .DateCreated}}
+      	</tr>
+        <tr>
+            <td>Oof Shard</td>
+            <td>{{ .OofShard}}
+      	</tr>
+    </table>
+  </body>
+  <script>
+    function handler() {
+        let searchValue = document.getElementById('search').value;
+        if (searchValue == "") {
+            alert("Input is empty");
+        } else {
+            window.location = "http://localhost:8080/order/" + searchValue
+        }
+    }
+</script>
+ </html>
+
+ 
+
