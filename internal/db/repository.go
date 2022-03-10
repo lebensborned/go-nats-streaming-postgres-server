@@ -14,6 +14,7 @@ type Repository interface {
 	Insert(order *Order) error
 	Fill() error
 	Init(user, password, dbname string) error
+	Close() error
 }
 
 // Cache + db handler abstraction
@@ -47,6 +48,9 @@ func (r *Repo) Init(user, password, dbname string) error {
 		return fmt.Errorf("cant fill repo cache in init(): %v", err)
 	}
 	return nil
+}
+func (r *Repo) Close() error {
+	return r.db.Close()
 }
 
 // Get order from cache

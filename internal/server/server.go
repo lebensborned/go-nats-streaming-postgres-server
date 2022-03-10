@@ -52,6 +52,10 @@ func (s *Server) serve() {
 
 // Graceful shutdown
 func (s *Server) Close() error {
+	err := s.repo.Close()
+	if err != nil {
+		log.Fatalf("Database Shutdown Failed: %+v", err)
+	}
 	ctx, cancel := context.WithTimeout(context.Background(), 5*time.Second)
 	defer cancel()
 
