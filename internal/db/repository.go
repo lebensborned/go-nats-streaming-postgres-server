@@ -139,21 +139,32 @@ func (r *Repo) Insert(order *Order) error {
 	}
 	// if something goes wrong - just rollback.
 	defer tx.Rollback()
-	tx.Exec(`insert into orders (order_uid, track_number, entry, locale, internal_signature, customer_id, delivery_service, shardkey, sm_id, date_created, oof_shard) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`,
+	_, err = tx.Exec(`insert into orders (order_uid, track_number, entry, locale, internal_signature, customer_id, delivery_service, shardkey, sm_id, date_created, oof_shard) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`,
 		order.OrderUid, order.TrackNumber, order.Entry, order.Locale, order.InternalSignature, order.CustomerId,
 		order.DeliveryService, order.Shardkey, order.SmId, order.DateCreated, order.OofShard)
-
-	tx.Exec(`insert into payments (transaction, request_id, currency, provider, amount, payment_dt, bank, delivery_cost, goods_total, custom_fee, fk_payments_order) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`,
+	if err != nil {
+		return fmt.Errorf("trouble in insert method: %v", err)
+	}
+	_, err = tx.Exec(`insert into payments (transaction, request_id, currency, provider, amount, payment_dt, bank, delivery_cost, goods_total, custom_fee, fk_payments_order) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11)`,
 		order.Payment.Transaction, order.Payment.RequestId, order.Payment.Currency, order.Payment.Provider, order.Payment.Amount,
 		order.Payment.PaymentDt, order.Payment.Bank, order.Payment.DeliveryCost, order.Payment.GoodsTotal,
 		order.Payment.CustomFee, order.OrderUid)
-	tx.Exec(`insert into delivery (name, phone, zip, city, address, region, email, fk_delivery_order) values ($1,$2,$3,$4,$5,$6,$7,$8)`,
+	if err != nil {
+		return fmt.Errorf("trouble in insert method: %v", err)
+	}
+	_, err = tx.Exec(`insert into delivery (name, phone, zip, city, address, region, email, fk_delivery_order) values ($1,$2,$3,$4,$5,$6,$7,$8)`,
 		order.Delivery.Name, order.Delivery.Phone, order.Delivery.Zip, order.Delivery.City, order.Delivery.Address,
 		order.Delivery.Region, order.Delivery.Email, order.OrderUid)
+	if err != nil {
+		return fmt.Errorf("trouble in insert method: %v", err)
+	}
 	for _, item := range order.Items {
-		tx.Exec(`insert into items (chrt_id, track_number, price, rid, name, sale, size, total_price, nm_id, brand, status, fk_items_order) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)`,
+		_, err := tx.Exec(`insert into items (chrt_id, track_number, price, rid, name, sale, size, total_price, nm_id, brand, status, fk_items_order) values ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)`,
 			item.ChrtId, item.TrackNumber, item.Price, item.Rid, item.Name, item.Sale, item.Size, item.TotalPrice, item.NmId,
 			item.Brand, item.Status, order.OrderUid)
+		if err != nil {
+			return fmt.Errorf("trouble in insert method: %v", err)
+		}
 	}
 	if err := tx.Commit(); err != nil {
 		return err
